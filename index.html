@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สำนักงานสลากกินแบ่งรัฐบาล - The Government Lottery Office</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Sarabun', sans-serif; }
+        .glo-blue { background-color: #003366; }
+        .glo-gold { color: #d4af37; }
+        .glo-bg-gold { background-color: #d4af37; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800 min-h-screen flex flex-col">
+
+    <!-- Top Bar -->
+    <div class="glo-blue text-white text-xs py-1 px-4 flex justify-between items-center border-b border-blue-900">
+        <div>
+            <span id="txt-official">สำนักงานสลากกินแบ่งรัฐบาล (GLO)</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <button id="lang-btn" onclick="toggleLanguage()" class="hover:underline flex items-center gap-1 font-semibold">
+                <i class="fa-solid font-bold text-yellow-400 fa-globe"></i> <span id="current-lang">EN</span>
+            </button>
+            <button onclick="openLoginModal()" class="bg-yellow-500 hover:bg-yellow-600 text-slate-900 font-bold px-3 py-1 rounded text-xs">
+                <i class="fa-solid fa-right-to-bracket mr-1"></i> <span id="txt-login-btn">เข้าสู่ระบบ</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Header / Logo Area -->
+    <header class="bg-white shadow-md py-4 px-6 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <div class="w-14 h-14 rounded-full border-2 border-yellow-500 flex items-center justify-center bg-blue-900 text-white font-bold text-xl shadow">
+                GLO
+            </div>
+            <div>
+                <h1 id="title-main" class="text-xl font-bold text-blue-900 leading-tight">สำนักงานสลากกินแบ่งรัฐบาล</h1>
+                <p id="title-sub" class="text-xs text-gray-500 tracking-wider">THE GOVERNMENT LOTTERY OFFICE</p>
+            </div>
+        </div>
+        <div class="hidden md:flex items-center space-x-2">
+            <input type="text" placeholder="Search..." id="search-input" class="border border-gray-300 rounded-l px-3 py-1 text-sm focus:outline-none focus:border-blue-800">
+            <button class="glo-blue text-white px-3 py-1 rounded-r hover:bg-blue-900 text-sm">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Navigation Bar -->
+    <nav class="glo-blue text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 flex justify-between items-center">
+            <ul class="flex space-x-6 text-sm font-medium py-3 overflow-x-auto">
+                <li class="hover:text-yellow-400 cursor-pointer border-b-2 border-yellow-400 pb-1" id="nav-home">หน้าแรก</li>
+                <li class="hover:text-yellow-400 cursor-pointer pb-1" id="nav-about">เกี่ยวกับเรา</li>
+                <li class="hover:text-yellow-400 cursor-pointer pb-1" id="nav-products">ผลิตภัณฑ์และบริการ</li>
+                <li class="hover:text-yellow-400 cursor-pointer pb-1" id="nav-news">ข่าวสารและประกาศ</li>
+                <li class="hover:text-yellow-400 cursor-pointer pb-1" id="nav-contact">ติดต่อเรา</li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-6 flex-grow w-full">
+        
+        <!-- Banner Carousel / Header -->
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-lg p-6 text-white mb-8 shadow-md">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <span class="bg-yellow-500 text-slate-900 text-xs font-bold px-2 py-1 rounded uppercase tracking-wider mb-2 inline-block">Official Announcement</span>
+                    <h2 class="text-2xl font-bold mb-1" id="banner-title">ตรวจผลรางวัลสลากกินแบ่งรัฐบาล</h2>
+                    <p class="text-sm text-blue-200" id="banner-desc">ตรวจสอบผลการออกรางวัลสลากกินแบ่งรัฐบาลงวดล่าสุด ได้ทางระบบออนไลน์</p>
+                </div>
+                <div>
+                    <label class="block text-xs text-blue-200 mb-1" id="lbl-select-date">เลือกงวดวันที่:</label>
+                    <select id="draw-date-select" onchange="renderResults()" class="text-gray-900 rounded px-3 py-2 text-sm font-semibold bg-white border border-gray-300">
+                        <option value="2026-10-16">16 ตุลาคม 2026</option>
+                        <option value="2026-10-01">1 ตุลาคม 2026</option>
+                        <option value="2026-09-16">16 กันยายน 2026</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Results Section -->
+        <section class="bg-white rounded-lg shadow-md p-6 mb-8 border border-gray-200">
+            <div class="flex justify-between items-center border-b pb-4 mb-6">
+                <h3 class="text-xl font-bold text-blue-900 flex items-center gap-2">
+                    <i class="fa-solid fa-trophy text-yellow-500"></i>
+                    <span id="title-draw-results">ผลการออกรางวัลสลากกินแบ่งรัฐบาล</span>
+                </h3>
+                <span id="draw-status-badge" class="bg-green-100 text-green-800 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1">
+                    <span class="w-2 h-2 bg-green-500 rounded-full animate-ping"></span> Live Results
+                </span>
+            </div>
+
+            <!-- First Prize -->
+            <div class="text-center bg-blue-50 border border-blue-200 rounded-lg p-6 mb-6">
+                <h4 class="text-sm font-bold text-gray-600 mb-2 uppercase tracking-wide" id="lbl-prize-1">รางวัลที่ 1 (Prize 1)</h4>
+                <div class="text-4xl md:text-5xl font-extrabold text-blue-900 tracking-widest font-mono my-2" id="res-prize-1">
+                    ------
+                </div>
+                <p class="text-xs text-gray-500" id="lbl-prize-1-val">รางวัลละ 6,000,000 บาท</p>
+            </div>
+
+            <!-- Secondary Prizes Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- 3 Digit Front -->
+                <div class="bg-gray-50 border border-gray-200 rounded p-4 text-center">
+                    <h5 class="text-xs font-bold text-gray-600 mb-1" id="lbl-3-front">เลขหน้า 3 ตัว (3-Digit Front)</h5>
+                    <div class="text-2xl font-bold text-gray-800 font-mono tracking-widest my-1" id="res-3-front">
+                        --- , ---
+                    </div>
+                    <p class="text-xs text-gray-400">2 รางวัลละ 4,000 บาท</p>
+                </div>
+
+                <!-- 3 Digit Back -->
+                <div class="bg-gray-50 border border-gray-200 rounded p-4 text-center">
+                    <h5 class="text-xs font-bold text-gray-600 mb-1" id="lbl-3-back">เลขท้าย 3 ตัว (3-Digit Back)</h5>
+                    <div class="text-2xl font-bold text-gray-800 font-mono tracking-widest my-1" id="res-3-back">
+                        --- , ---
+                    </div>
+                    <p class="text-xs text-gray-400">2 รางวัลละ 4,000 บาท</p>
+                </div>
+
+                <!-- 2 Digit Bottom -->
+                <div class="bg-gray-50 border border-gray-200 rounded p-4 text-center">
+                    <h5 class="text-xs font-bold text-gray-600 mb-1" id="lbl-2-digit">เลขท้าย 2 ตัว (2-Digit)</h5>
+                    <div class="text-2xl font-bold text-gray-800 font-mono tracking-widest my-1" id="res-2-digit">
+                        --
+                    </div>
+                    <p class="text-xs text-gray-400">1 รางวัลละ 2,000 บาท</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Services Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="bg-white border p-5 rounded-lg shadow-sm hover:shadow transition">
+                <i class="fa-solid fa-mobile-screen text-blue-900 text-3xl mb-3"></i>
+                <h4 class="font-bold text-base mb-1 text-gray-800" id="card-1-title">แอปพลิเคชัน "เป๋าตัง"</h4>
+                <p class="text-xs text-gray-600" id="card-1-desc">ซื้อ-ขายสลากดิจิทัล ราคา 80 บาท สะดวก Safe และมั่นใจได้ทุกขั้นตอน</p>
+            </div>
+            <div class="bg-white border p-5 rounded-lg shadow-sm hover:shadow transition">
+                <i class="fa-solid fa-hand-holding-dollar text-blue-900 text-3xl mb-3"></i>
+                <h4 class="font-bold text-base mb-1 text-gray-800" id="card-2-title">การขึ้นเงินรางวัล</h4>
+                <p class="text-xs text-gray-600" id="card-2-desc">รายละเอียดขั้นตอนการรับเงินรางวัลและสถานที่ให้บริการรับชำระ</p>
+            </div>
+            <div class="bg-white border p-5 rounded-lg shadow-sm hover:shadow transition">
+                <i class="fa-solid fa-newspaper text-blue-900 text-3xl mb-3"></i>
+                <h4 class="font-bold text-base mb-1 text-gray-800" id="card-3-title">ข่าวสารกิจกรรม CSR</h4>
+                <p class="text-xs text-gray-600" id="card-3-desc">ติดตามกิจกรรมเพื่อสังคมและข่าวสารองค์กรสลากกินแบ่งรัฐบาล</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="glo-blue text-white py-8 px-4 mt-auto">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+            <div>
+                <h5 class="font-bold text-sm mb-2 text-yellow-400">สำนักงานสลากกินแบ่งรัฐบาล</h5>
+                <p class="text-blue-200">359 ถนนนนทบุรี ตำบลท่าทราย อำเภอเมืองนนทบุรี จังหวัดนนทบุรี 11000</p>
+                <p class="text-blue-200 mt-1">Call Center: 0 2528 9999</p>
+            </div>
+            <div class="md:text-right flex flex-col justify-between">
+                <div>
+                    <p class="text-blue-200">&copy; 2026 The Government Lottery Office. All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="fixed inset-0 bg-black bg-opacity-60 hidden flex items-center justify-center p-4 z-50">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-sm overflow-hidden transform transition-all">
+            <div class="glo-blue text-white p-4 flex justify-between items-center">
+                <h3 class="font-bold text-base" id="modal-login-title">เข้าสู่ระบบระบบงาน</h3>
+                <button onclick="closeLoginModal()" class="text-gray-300 hover:text-white font-bold text-xl">&times;</button>
+            </div>
+            <form onsubmit="handleLogin(event)" class="p-6">
+                <div id="error-msg" class="hidden bg-red-100 border border-red-400 text-red-700 text-xs rounded p-2 mb-4">
+                    ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง!
+                </div>
+                <div class="mb-4">
+                    <label class="block text-xs font-bold text-gray-700 mb-1" id="lbl-username">ชื่อผู้ใช้งาน / Username</label>
+                    <input type="text" id="username" required placeholder="admin" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-800">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-xs font-bold text-gray-700 mb-1" id="lbl-password">รหัสผ่าน / Password</label>
+                    <input type="password" id="password" required placeholder="123456" class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-blue-800">
+                </div>
+                <button type="submit" class="w-full glo-blue text-white font-bold py-2 rounded text-sm hover:bg-blue-900 transition">
+                    <span id="btn-submit-login">เข้าสู่ระบบ</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Script Section -->
+    <script>
+        // Draw Data Storage
+        const drawData = {
+            "2026-10-16": {
+                prize1: "951832",
+                front3: ["241", "598"],
+                back3: ["113", "762"],
+                digit2: "54"
+            },
+            "2026-10-01": {
+                prize1: "743285",
+                front3: ["120", "349"],
+                back3: ["672", "891"],
+                digit2: "92"
+            },
+            "2026-09-16": {
+                prize1: "619412",
+                front3: ["035", "421"],
+                back3: ["518", "904"],
+                digit2: "17"
+            }
+        };
+
+        // Render Lottery Results
+        function renderResults() {
+            const date = document.getElementById("draw-date-select").value;
+            const data = drawData[date];
+            if (data) {
+                document.getElementById("res-prize-1").innerText = data.prize1;
+                document.getElementById("res-3-front").innerText = data.front3.join(" , ");
+                document.getElementById("res-3-back").innerText = data.back3.join(" , ");
+                document.getElementById("res-2-digit").innerText = data.digit2;
+            }
+        }
+
+        // Modal Controls
+        function openLoginModal() {
+            document.getElementById("login-modal").classList.remove("hidden");
+        }
+
+        function closeLoginModal() {
+            document.getElementById("login-modal").classList.add("hidden");
+            document.getElementById("error-msg").classList.add("hidden");
+        }
+
+        // Login Handling
+        function handleLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById("username").value;
+            const p = document.getElementById("password").value;
+
+            // Set custom username & password validation
+            if (u === "admin" && p === "123456") {
+                alert("เข้าสู่ระบบสำเร็จ! (Login Successful)");
+                closeLoginModal();
+            } else {
+                document.getElementById("error-msg").classList.remove("hidden");
+            }
+        }
+
+        // Toggle Language (TH <-> EN)
+        let currentLang = 'TH';
+        function toggleLanguage() {
+            if (currentLang === 'TH') {
+                currentLang = 'EN';
+                document.getElementById("current-lang").innerText = "TH";
+                document.getElementById("txt-official").innerText = "The Government Lottery Office (GLO)";
+                document.getElementById("txt-login-btn").innerText = "Log In";
+                document.getElementById("title-main").innerText = "The Government Lottery Office";
+                document.getElementById("nav-home").innerText = "Home";
+                document.getElementById("nav-about").innerText = "About Us";
+                document.getElementById("nav-products").innerText = "Products & Services";
+                document.getElementById("nav-news").innerText = "News & Media";
+                document.getElementById("nav-contact").innerText = "Contact Us";
+                document.getElementById("banner-title").innerText = "Check Lottery Draw Results";
+                document.getElementById("banner-desc").innerText = "Check the official government lottery draw results online instantly.";
+                document.getElementById("title-draw-results").innerText = "Official Draw Results";
+            } else {
+                currentLang = 'TH';
+                document.getElementById("current-lang").innerText = "EN";
+                document.getElementById("txt-official").innerText = "สำนักงานสลากกินแบ่งรัฐบาล (GLO)";
+                document.getElementById("txt-login-btn").innerText = "เข้าสู่ระบบ";
+                document.getElementById("title-main").innerText = "สำนักงานสลากกินแบ่งรัฐบาล";
+                document.getElementById("nav-home").innerText = "หน้าแรก";
+                document.getElementById("nav-about").innerText = "เกี่ยวกับเรา";
+                document.getElementById("nav-products").innerText = "ผลิตภัณฑ์และบริการ";
+                document.getElementById("nav-news").innerText = "ข่าวสารและประกาศ";
+                document.getElementById("nav-contact").innerText = "ติดต่อเรา";
+                document.getElementById("banner-title").innerText = "ตรวจผลรางวัลสลากกินแบ่งรัฐบาล";
+                document.getElementById("banner-desc").innerText = "ตรวจสอบผลการออกรางวัลสลากกินแบ่งรัฐบาลงวดล่าสุด ได้ทางระบบออนไลน์";
+                document.getElementById("title-draw-results").innerText = "ผลการออกรางวัลสลากกินแบ่งรัฐบาล";
+            }
+        }
+
+        // Initialize on load
+        window.onload = function() {
+            renderResults();
+        };
+    </script>
+</body>
+</html>
